@@ -1,4 +1,3 @@
-import type { ReactElement } from "react";
 import type { Product } from "../types.ts";
 
 export function ProductTable({
@@ -10,29 +9,28 @@ export function ProductTable({
   filterText: string;
   inStockOnly: boolean;
 }) {
-  const rows = products.reduce<ReactElement[]>((rows, product, i) => {
+  const rows = products.flatMap((product, i) => {
     if (!product.name.toLowerCase().includes(filterText.toLowerCase())) {
-      return rows;
+      return [];
     }
     if (inStockOnly && !product.isStocked) {
-      return rows;
+      return [];
     }
 
     const lastCategory = products.at(i - 1)?.category;
-
     const isNewCategory = product.category !== lastCategory;
-    if (isNewCategory) {
-      rows.push(
-        <ProductCategoryRow
-          category={product.category}
-          key={product.category}
-        />,
-      );
-    }
 
-    rows.push(<ProductRow product={product} key={product.name} />);
-
-    return rows;
+    return [
+      ...(isNewCategory
+        ? [
+            <ProductCategoryRow
+              category={product.category}
+              key={product.category}
+            />,
+          ]
+        : []),
+      <ProductRow product={product} key={product.name} />,
+    ];
   }, []);
 
   return (
