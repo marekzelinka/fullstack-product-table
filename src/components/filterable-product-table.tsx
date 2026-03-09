@@ -11,7 +11,9 @@ export function FilterableProductTable({ products }: { products: Product[] }) {
     <div>
       <SearchBar
         filterText={filterText}
+        onFilterTextChange={setFilterText}
         shouldDisplayOnlyStocked={shouldDisplayOnlyStocked}
+        onShouldDisplayOnlyStockedChange={setShouldDisplayOnlyStocked}
       />
       <ProductTable
         products={products}
@@ -24,17 +26,32 @@ export function FilterableProductTable({ products }: { products: Product[] }) {
 
 function SearchBar({
   filterText,
+  onFilterTextChange,
   shouldDisplayOnlyStocked,
+  onShouldDisplayOnlyStockedChange,
 }: {
   filterText: string;
+  onFilterTextChange: (filterText: string) => void;
   shouldDisplayOnlyStocked: boolean;
+  onShouldDisplayOnlyStockedChange: (shouldDisplayOnlyStocked: boolean) => void;
 }) {
   return (
     <form>
-      <input type="text" placeholder="Search..." value={filterText} />
+      <input
+        type="text"
+        placeholder="Search..."
+        value={filterText}
+        onChange={(event) => onFilterTextChange(event.target.value)}
+      />
       <label>
-        <input type="checkbox" checked={shouldDisplayOnlyStocked} /> Only show
-        products in stock
+        <input
+          type="checkbox"
+          checked={shouldDisplayOnlyStocked}
+          onChange={(event) =>
+            onShouldDisplayOnlyStockedChange(event.target.checked)
+          }
+        />{" "}
+        Only show products in stock
       </label>
     </form>
   );
