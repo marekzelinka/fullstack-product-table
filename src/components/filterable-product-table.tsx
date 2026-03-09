@@ -4,21 +4,20 @@ import { ProductTable } from "./product-table.tsx";
 
 export function FilterableProductTable({ products }: { products: Product[] }) {
   const [filterText, setFilterText] = useState("");
-  const [shouldDisplayOnlyStocked, setShouldDisplayOnlyStocked] =
-    useState(false);
+  const [inStockOnly, setInStockOnly] = useState(false);
 
   return (
     <div>
       <SearchBar
         filterText={filterText}
         onFilterTextChange={setFilterText}
-        shouldDisplayOnlyStocked={shouldDisplayOnlyStocked}
-        onShouldDisplayOnlyStockedChange={setShouldDisplayOnlyStocked}
+        inStockOnly={inStockOnly}
+        setInStockOnly={setInStockOnly}
       />
       <ProductTable
         products={products}
         filterText={filterText}
-        shouldDisplayOnlyStocked={shouldDisplayOnlyStocked}
+        inStockOnly={inStockOnly}
       />
     </div>
   );
@@ -27,13 +26,13 @@ export function FilterableProductTable({ products }: { products: Product[] }) {
 function SearchBar({
   filterText,
   onFilterTextChange,
-  shouldDisplayOnlyStocked,
-  onShouldDisplayOnlyStockedChange,
+  inStockOnly,
+  setInStockOnly,
 }: {
   filterText: string;
   onFilterTextChange: (filterText: string) => void;
-  shouldDisplayOnlyStocked: boolean;
-  onShouldDisplayOnlyStockedChange: (shouldDisplayOnlyStocked: boolean) => void;
+  inStockOnly: boolean;
+  setInStockOnly: (inStockOnly: boolean) => void;
 }) {
   return (
     <form>
@@ -46,10 +45,8 @@ function SearchBar({
       <label>
         <input
           type="checkbox"
-          checked={shouldDisplayOnlyStocked}
-          onChange={(event) =>
-            onShouldDisplayOnlyStockedChange(event.target.checked)
-          }
+          checked={inStockOnly}
+          onChange={(event) => setInStockOnly(event.target.checked)}
         />{" "}
         Only show products in stock
       </label>

@@ -4,18 +4,17 @@ import type { Product } from "../types.ts";
 export function ProductTable({
   products,
   filterText,
-  shouldDisplayOnlyStocked,
+  inStockOnly,
 }: {
   products: Product[];
   filterText: string;
-  shouldDisplayOnlyStocked: boolean;
+  inStockOnly: boolean;
 }) {
   const rows = products.reduce<ReactElement[]>((rows, product, i) => {
-    if (product.name.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
+    if (!product.name.toLowerCase().includes(filterText.toLowerCase())) {
       return rows;
     }
-
-    if (shouldDisplayOnlyStocked && !product.isStocked) {
+    if (inStockOnly && !product.isStocked) {
       return rows;
     }
 
@@ -63,11 +62,15 @@ function ProductRow({ product }: { product: Product }) {
   ) : (
     <span style={{ color: "red" }}>{product.name}</span>
   );
+  const price = (product.price / 100).toLocaleString("en-GB", {
+    style: "currency",
+    currency: "GBP",
+  });
 
   return (
     <tr>
       <td>{name}</td>
-      <td>{product.price}</td>
+      <td>{price}</td>
     </tr>
   );
 }

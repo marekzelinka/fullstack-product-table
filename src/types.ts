@@ -1,6 +1,6 @@
 export interface Product {
   category: string;
-  price: string;
+  price: number;
   isStocked: boolean;
   name: string;
 }
