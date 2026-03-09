@@ -1,11 +1,29 @@
 import type { ReactElement } from "react";
 import type { Product } from "../types.ts";
 
-export function ProductTable({ products }: { products: Product[] }) {
-  const rows = products.reduce<ReactElement[]>((acc, product, i) => {
+export function ProductTable({
+  products,
+  filterText,
+  shouldDisplayOnlyStocked,
+}: {
+  products: Product[];
+  filterText: string;
+  shouldDisplayOnlyStocked: boolean;
+}) {
+  const rows = products.reduce<ReactElement[]>((rows, product, i) => {
+    if (product.name.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
+      return rows;
+    }
+
+    if (shouldDisplayOnlyStocked && !product.isStocked) {
+      return rows;
+    }
+
     const lastCategory = products.at(i - 1)?.category;
-    if (product.category !== lastCategory) {
-      acc.push(
+
+    const isNewCategory = product.category !== lastCategory;
+    if (isNewCategory) {
+      rows.push(
         <ProductCategoryRow
           category={product.category}
           key={product.category}
@@ -13,9 +31,9 @@ export function ProductTable({ products }: { products: Product[] }) {
       );
     }
 
-    acc.push(<ProductRow product={product} key={product.name} />);
+    rows.push(<ProductRow product={product} key={product.name} />);
 
-    return acc;
+    return rows;
   }, []);
 
   return (
