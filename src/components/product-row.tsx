@@ -1,5 +1,5 @@
 import type { Product } from "../lib/types.ts";
-import { formatCurrency } from "../lib/utils.ts";
+import { formatPrice } from "../lib/utils.ts";
 
 export function ProductRow({ product }: { product: Product }) {
   const name = product.isStocked ? (
@@ -7,7 +7,7 @@ export function ProductRow({ product }: { product: Product }) {
   ) : (
     <span style={{ color: "red" }}>{product.name}</span>
   );
-  const price = formatCurrency(product.price / 100);
+  const price = formatPrice(product.price / 100, "GBP");
 
   return (
     <tr>

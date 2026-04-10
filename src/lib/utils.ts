@@ -1,8 +1,6 @@
-const currencyFormatter = new Intl.NumberFormat("en-GB", {
-  style: "currency",
-  currency: "GBP",
-});
-
-export function formatCurrency(value: number) {
-  return currencyFormatter.format(value);
+export function formatPrice(amount: number, currency: string) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency,
+  }).format(amount);
 }
