@@ -1,4 +1,4 @@
-import type { Product } from "./types.ts";
+import type { Product } from "../lib/types.ts";
 
 export const PRODUCTS: Product[] = [
   { category: "Fruits", price: 100, isStocked: true, name: "Apple" },

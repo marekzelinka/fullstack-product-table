@@ -1,4 +1,6 @@
-import type { Product } from "../types.ts";
+import type { Product } from "../lib/types.ts";
+import { ProductCategoryRow } from "./product-category-row.tsx";
+import { ProductRow } from "./product-row.tsx";
 
 export function ProductTable({
   products,
@@ -22,12 +24,7 @@ export function ProductTable({
 
     return [
       ...(isNewCategory
-        ? [
-            <ProductCategoryRow
-              category={product.category}
-              key={product.category}
-            />,
-          ]
+        ? [<ProductCategoryRow category={product.category} key={product.category} />]
         : []),
       <ProductRow product={product} key={product.name} />,
     ];
@@ -43,32 +40,5 @@ export function ProductTable({
       </thead>
       <tbody>{rows}</tbody>
     </table>
-  );
-}
-
-function ProductCategoryRow({ category }: { category: string }) {
-  return (
-    <tr>
-      <th colSpan={2}>{category}</th>
-    </tr>
-  );
-}
-
-function ProductRow({ product }: { product: Product }) {
-  const name = product.isStocked ? (
-    product.name
-  ) : (
-    <span style={{ color: "red" }}>{product.name}</span>
-  );
-  const price = (product.price / 100).toLocaleString("en-GB", {
-    style: "currency",
-    currency: "GBP",
-  });
-
-  return (
-    <tr>
-      <td>{name}</td>
-      <td>{price}</td>
-    </tr>
   );
 }
