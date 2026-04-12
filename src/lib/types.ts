@@ -4,3 +4,9 @@ export type Product = {
   isStocked: boolean;
   name: string;
 };
+
+export type Filters = {
+  query: string;
+  inStockOnly: boolean;
+  category: string;
+};
