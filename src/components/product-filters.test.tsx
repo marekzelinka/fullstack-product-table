@@ -18,7 +18,7 @@ test("displays the correct initial values from props", async () => {
   );
 
   await expect
-    .element(screen.getByRole("textbox", { name: /search/i }))
+    .element(screen.getByRole("searchbox", { name: /search/i }))
     .toHaveValue("Initial Query");
   await expect.element(screen.getByRole("combobox", { name: /category/i })).toHaveSelection("");
   await expect
@@ -44,7 +44,7 @@ test("calls event handlers with correct values", async () => {
     />,
   );
 
-  await screen.getByRole("textbox", { name: /search/i }).fill("Apple");
+  await screen.getByRole("searchbox", { name: /search/i }).fill("Apple");
   await screen.getByRole("checkbox", { name: /only show products in stock/i }).click();
   await screen.getByRole("combobox", { name: /category/i }).selectOptions("Vegetables");
 

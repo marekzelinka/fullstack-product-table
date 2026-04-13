@@ -21,7 +21,7 @@ test("filters products by search query", async () => {
   await expect.element(screen.getByRole("cell", { name: "Spinach" })).toBeVisible();
   await expect.element(screen.getByRole("cell", { name: "Pumpkin" })).toBeVisible();
 
-  await screen.getByRole("textbox", { name: /search/i }).fill("spin");
+  await screen.getByRole("searchbox", { name: /search/i }).fill("spin");
 
   // Only show matching products
   await expect.element(screen.getByRole("cell", { name: "Apple" })).not.toBeInTheDocument();
@@ -54,7 +54,7 @@ test("filters products on category selection", async () => {
 
 test("filters can be reset", async () => {
   const screen = await render(<FilterableProductTable products={MOCK_PRODUCTS} />);
-  const searchElement = screen.getByRole("textbox", { name: /search/i });
+  const searchElement = screen.getByRole("searchbox", { name: /search/i });
   const checkboxElement = screen.getByRole("checkbox", { name: /only show products in stock/i });
   const selectElement = screen.getByRole("combobox", { name: /category/i });
 

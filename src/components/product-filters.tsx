@@ -21,7 +21,7 @@ export function ProductFilters({
     <form>
       <div>
         <input
-          type="text"
+          type="search"
           name="search"
           value={filterText}
           onChange={(event) => onFilterTextChange(event.target.value)}
