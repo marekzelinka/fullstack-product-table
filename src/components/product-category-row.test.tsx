@@ -12,7 +12,6 @@ test("category row spans both columns", async () => {
     </table>,
   );
 
-  // In Browser Mode, we can check the colSpan attribute directly
   expect(screen.getByRole("rowheader", { name: "Fruits" }).element().getAttribute("colspan")).toBe(
     "2",
   );

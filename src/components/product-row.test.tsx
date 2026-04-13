@@ -16,7 +16,6 @@ test("renders prooduct name and formatted price", async () => {
     </table>,
   );
 
-  // await expect.element(screen.getByText("Apple")).toBeVisible();
   await expect.element(screen.getByRole("cell", { name: "Apple" })).toBeVisible();
   await expect.element(screen.getByRole("cell", { name: "£1.00" })).toBeVisible();
 });

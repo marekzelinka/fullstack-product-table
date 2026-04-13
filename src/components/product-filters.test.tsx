@@ -27,11 +27,10 @@ test("displays the correct initial values from props", async () => {
   await expect.element(screen.getByRole("button", { name: /reset filters/i })).toBeEnabled();
 });
 
-test("calls event handlers with values", async () => {
+test("calls event handlers with correct values", async () => {
   const mockOnFilterTextChange = vi.fn();
   const mockOnInStockOnlyChange = vi.fn();
   const mockOnCategoryChange = vi.fn();
-
   const screen = await render(
     <ProductFilters
       filterText=""

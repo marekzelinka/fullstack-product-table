@@ -23,6 +23,7 @@ test("filters products by search query", async () => {
 
   await screen.getByRole("textbox", { name: /search/i }).fill("spin");
 
+  // Only show matching products
   await expect.element(screen.getByRole("cell", { name: "Apple" })).not.toBeInTheDocument();
   await expect.element(screen.getByRole("cell", { name: "Passionfruit" })).not.toBeInTheDocument();
   await expect.element(screen.getByRole("cell", { name: "Spinach" })).toBeVisible();
@@ -32,7 +33,7 @@ test("filters products by search query", async () => {
 test("filters products when out-of-stock checkbox is toggled", async () => {
   const screen = await render(<FilterableProductTable products={MOCK_PRODUCTS} />);
 
-  await screen.getByLabelText(/only show products in stock/i).click();
+  await screen.getByRole("checkbox", { name: /only show products in stock/i }).click();
 
   await expect.element(screen.getByRole("cell", { name: "Apple" })).toBeVisible();
   await expect.element(screen.getByRole("cell", { name: "Passionfruit" })).not.toBeInTheDocument();

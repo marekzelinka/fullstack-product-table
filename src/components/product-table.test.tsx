@@ -43,7 +43,6 @@ test("orders elements correctly: Category followed by its Products", async () =>
   const screen = await render(
     <ProductTable products={MOCK_PRODUCTS} filterText="" inStockOnly={false} category="" />,
   );
-
   const rows = screen.getByRole("row").all();
 
   // Correct order is: header, category, product (1), category, product (1)
