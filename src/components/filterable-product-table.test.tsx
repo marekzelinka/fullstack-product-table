@@ -33,7 +33,7 @@ test("filters products by search query", async () => {
 test("filters products when out-of-stock checkbox is toggled", async () => {
   const screen = await render(<FilterableProductTable products={MOCK_PRODUCTS} />);
 
-  await screen.getByRole("checkbox", { name: /only show products in stock/i }).click();
+  await screen.getByRole("checkbox", { name: /show/i }).click();
 
   await expect.element(screen.getByRole("cell", { name: "Apple" })).toBeVisible();
   await expect.element(screen.getByRole("cell", { name: "Passionfruit" })).not.toBeInTheDocument();
@@ -44,7 +44,7 @@ test("filters products when out-of-stock checkbox is toggled", async () => {
 test("filters products on category selection", async () => {
   const screen = await render(<FilterableProductTable products={MOCK_PRODUCTS} />);
 
-  await screen.getByRole("combobox", { name: /category/i }).selectOptions("Vegetables");
+  await screen.getByRole("combobox", { name: /select/i }).selectOptions("Vegetables");
 
   await expect.element(screen.getByRole("cell", { name: "Apple" })).not.toBeInTheDocument();
   await expect.element(screen.getByRole("cell", { name: "Passionfruit" })).not.toBeInTheDocument();
@@ -52,18 +52,18 @@ test("filters products on category selection", async () => {
   await expect.element(screen.getByRole("cell", { name: "Pumpkin" })).toBeVisible();
 });
 
-test("filters can be reset", async () => {
+test("filters can be cleared", async () => {
   const screen = await render(<FilterableProductTable products={MOCK_PRODUCTS} />);
   const searchElement = screen.getByRole("searchbox", { name: /search/i });
-  const checkboxElement = screen.getByRole("checkbox", { name: /only show products in stock/i });
-  const selectElement = screen.getByRole("combobox", { name: /category/i });
+  const checkboxElement = screen.getByRole("checkbox", { name: /show/i });
+  const selectElement = screen.getByRole("combobox", { name: /select/i });
 
   await searchElement.fill("spin");
   await checkboxElement.click();
   await userEvent.selectOptions(selectElement, "Vegetables");
   await selectElement.selectOptions("Vegetables");
 
-  await screen.getByRole("button", { name: /reset filters/i }).click();
+  await screen.getByRole("button", { name: /clear/i }).click();
 
   await expect.element(searchElement).toHaveValue("");
   await expect.element(checkboxElement).not.toBeChecked();

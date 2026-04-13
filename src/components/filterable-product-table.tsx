@@ -1,40 +1,37 @@
 import { useState } from "react";
 
-import type { Product } from "../lib/types.ts";
-import { ProductFilters } from "./product-filters.tsx";
+import type { Filters, Product } from "../lib/types.ts";
+import { ProductFilterForm } from "./product-filter-form.tsx";
 import { ProductTable } from "./product-table.tsx";
 
+const INITIAL_FILTERS = {
+  query: "",
+  selectedCategory: "",
+  inStockOnly: false,
+};
+
 export function FilterableProductTable({ products }: { products: Product[] }) {
-  const [filterText, setFilterText] = useState("");
-  const [inStockOnly, setInStockOnly] = useState(false);
-  const [category, setCategory] = useState("");
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
+
+  const updateFilters = (newFilters: Partial<Filters>) => {
+    setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+  };
+
+  const resetFilters = () => {
+    setFilters(INITIAL_FILTERS);
+  };
 
   const categories = [...new Set(products.map((product) => product.category))];
 
-  const resetFilters = () => {
-    setFilterText("");
-    setInStockOnly(false);
-    setCategory("");
-  };
-
   return (
     <div>
-      <ProductFilters
-        filterText={filterText}
-        onFilterTextChange={setFilterText}
-        inStockOnly={inStockOnly}
-        onInStockOnlyChange={setInStockOnly}
-        category={category}
-        onCategoryChange={setCategory}
-        categories={categories}
+      <ProductFilterForm
+        values={filters}
+        onChange={updateFilters}
         onReset={resetFilters}
+        categories={categories}
       />
-      <ProductTable
-        products={products}
-        filterText={filterText}
-        inStockOnly={inStockOnly}
-        category={category}
-      />
+      <ProductTable products={products} filters={filters} />
     </div>
   );
 }

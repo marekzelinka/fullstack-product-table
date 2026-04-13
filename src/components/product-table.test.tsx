@@ -11,7 +11,10 @@ const MOCK_PRODUCTS: Product[] = [
 
 test("renders category headers only when the category changes", async () => {
   const screen = await render(
-    <ProductTable products={MOCK_PRODUCTS} filterText="" inStockOnly={false} category="" />,
+    <ProductTable
+      products={MOCK_PRODUCTS}
+      filters={{ query: "", inStockOnly: false, selectedCategory: "" }}
+    />,
   );
 
   // Verify that both categories only appear once as a category header
@@ -23,9 +26,7 @@ test("shows no rows when nothing matches the filter", async () => {
   const screen = await render(
     <ProductTable
       products={MOCK_PRODUCTS}
-      filterText="Non-existent"
-      inStockOnly={false}
-      category=""
+      filters={{ query: "Non-existent", inStockOnly: false, selectedCategory: "" }}
     />,
   );
 
@@ -41,7 +42,10 @@ test("shows no rows when nothing matches the filter", async () => {
 
 test("orders elements correctly: Category followed by its Products", async () => {
   const screen = await render(
-    <ProductTable products={MOCK_PRODUCTS} filterText="" inStockOnly={false} category="" />,
+    <ProductTable
+      products={MOCK_PRODUCTS}
+      filters={{ query: "", inStockOnly: false, selectedCategory: "" }}
+    />,
   );
   const rows = screen.getByRole("row").all();
 

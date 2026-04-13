@@ -1,27 +1,17 @@
-import type { Product } from "../lib/types.ts";
+import type { Filters, Product } from "../lib/types.ts";
 import { ProductCategoryRow } from "./product-category-row.tsx";
 import { ProductRow } from "./product-row.tsx";
 
-export function ProductTable({
-  products,
-  filterText,
-  inStockOnly,
-  category,
-}: {
-  products: Product[];
-  filterText: string;
-  inStockOnly: boolean;
-  category: string;
-}) {
+export function ProductTable({ products, filters }: { products: Product[]; filters: Filters }) {
   const rows = products.flatMap((product, i) => {
-    if (!product.name.toLowerCase().includes(filterText.toLowerCase())) {
+    if (!product.name.toLowerCase().includes(filters.query.toLowerCase())) {
       return [];
     }
-    if (inStockOnly && !product.isStocked) {
+    if (filters.inStockOnly && !product.isStocked) {
       return [];
     }
 
-    if (category !== "" && product.category !== category) {
+    if (filters.selectedCategory !== "" && product.category !== filters.selectedCategory) {
       return [];
     }
 
@@ -51,7 +41,7 @@ export function ProductTable({
       ) : (
         <tbody>
           <tr>
-            <td colSpan={2}>No products found matching "{filterText}"</td>
+            <td colSpan={2}>No products found matching "{filters.query}"</td>
           </tr>
         </tbody>
       )}

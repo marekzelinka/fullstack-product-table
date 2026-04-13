@@ -7,6 +7,6 @@ export type Product = {
 
 export type Filters = {
   query: string;
+  selectedCategory: string;
   inStockOnly: boolean;
-  category: string;
 };
