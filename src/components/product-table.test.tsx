@@ -10,43 +10,32 @@ const MOCK_PRODUCTS: Product[] = [
 ];
 
 test("renders category headers only when the category changes", async () => {
-  const screen = await render(
-    <ProductTable
-      products={MOCK_PRODUCTS}
-      filters={{ query: "", inStockOnly: false, selectedCategory: "" }}
-    />,
-  );
+  const screen = await render(<ProductTable products={MOCK_PRODUCTS} />);
 
   // Verify that both categories only appear once as a category header
   await expect.element(screen.getByRole("row", { name: "Fruits" })).toBeVisible();
   await expect.element(screen.getByRole("row", { name: "Vegetables" })).toBeVisible();
 });
 
-test("shows no rows when nothing matches the filter", async () => {
-  const screen = await render(
-    <ProductTable
-      products={MOCK_PRODUCTS}
-      filters={{ query: "Non-existent", inStockOnly: false, selectedCategory: "" }}
-    />,
-  );
+// test("shows no rows when nothing matches the filter", async () => {
+//   const screen = await render(
+//     <ProductTable
+//       products={MOCK_PRODUCTS}
+//     />,
+//   );
 
-  await expect
-    .element(screen.getByRole("row", { name: /No products found matching "Non-existent"/i }))
-    .toBeVisible();
+//   await expect
+//     .element(screen.getByRole("row", { name: /No products found matching "Non-existent"/i }))
+//     .toBeVisible();
 
-  await expect.element(screen.getByRole("row", { name: "Fruits" })).not.toBeInTheDocument();
-  await expect.element(screen.getByRole("cell", { name: "Apple" })).not.toBeInTheDocument();
-  await expect.element(screen.getByRole("row", { name: "Vegetables" })).not.toBeInTheDocument();
-  await expect.element(screen.getByRole("cell", { name: "Spinach" })).not.toBeInTheDocument();
-});
+//   await expect.element(screen.getByRole("row", { name: "Fruits" })).not.toBeInTheDocument();
+//   await expect.element(screen.getByRole("cell", { name: "Apple" })).not.toBeInTheDocument();
+//   await expect.element(screen.getByRole("row", { name: "Vegetables" })).not.toBeInTheDocument();
+//   await expect.element(screen.getByRole("cell", { name: "Spinach" })).not.toBeInTheDocument();
+// });
 
 test("orders elements correctly: Category followed by its Products", async () => {
-  const screen = await render(
-    <ProductTable
-      products={MOCK_PRODUCTS}
-      filters={{ query: "", inStockOnly: false, selectedCategory: "" }}
-    />,
-  );
+  const screen = await render(<ProductTable products={MOCK_PRODUCTS} />);
   const rows = screen.getByRole("row").all();
 
   // Correct order is: header, category, product (1), category, product (1)

@@ -21,7 +21,22 @@ export function FilterableProductTable({ products }: { products: Product[] }) {
     setFilters(INITIAL_FILTERS);
   };
 
-  const categories = [...new Set(products.map((product) => product.category))];
+  const baseMatches = products.filter((product) => {
+    const matchesQuery = product.name.toLowerCase().includes(filters.query.toLowerCase());
+    const matchesInStock = !filters.inStockOnly || product.isStocked;
+
+    return matchesQuery && matchesInStock;
+  });
+  const availableCategories = new Set(baseMatches.map((product) => product.category));
+  const filteredProducts = filters.selectedCategory
+    ? baseMatches.filter((product) => product.category === filters.selectedCategory)
+    : baseMatches;
+  const categoryOptions = [...new Set(products.map((product) => product.category))].map(
+    (category) => ({
+      category,
+      isDisabled: !availableCategories.has(category),
+    }),
+  );
 
   return (
     <div>
@@ -29,9 +44,13 @@ export function FilterableProductTable({ products }: { products: Product[] }) {
         values={filters}
         onChange={updateFilters}
         onReset={resetFilters}
-        categories={categories}
+        categoryOptions={categoryOptions}
       />
-      <ProductTable products={products} filters={filters} />
+      {filteredProducts.length ? (
+        <ProductTable products={filteredProducts} />
+      ) : (
+        <div>No products found matching "{filters.query}"</div>
+      )}
     </div>
   );
 }

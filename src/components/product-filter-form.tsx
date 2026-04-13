@@ -4,12 +4,15 @@ export function ProductFilterForm({
   values,
   onChange,
   onReset,
-  categories,
+  categoryOptions,
 }: {
   values: Filters;
   onChange: (values: Partial<Filters>) => void;
   onReset: () => void;
-  categories: Product["category"][];
+  categoryOptions: {
+    category: Product["category"];
+    isDisabled: boolean;
+  }[];
 }) {
   return (
     <form>
@@ -29,8 +32,10 @@ export function ProductFilterForm({
           aria-label="Select a product category"
         >
           <option value="">All categories</option>
-          {categories.map((categoryOption) => (
-            <option key={categoryOption}>{categoryOption}</option>
+          {categoryOptions.map((option) => (
+            <option key={option.category} disabled={option.isDisabled}>
+              {option.category}
+            </option>
           ))}
         </select>
       </div>

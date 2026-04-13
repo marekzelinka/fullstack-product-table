@@ -12,7 +12,7 @@ test("displays the correct initial values", async () => {
         inStockOnly: true,
       }}
       onChange={vi.fn()}
-      categories={["Vegetables"]}
+      categoryOptions={[]}
       onReset={vi.fn()}
     />,
   );
@@ -32,7 +32,7 @@ test("clear filters button is disabled when filters are initial", async () => {
         inStockOnly: false,
       }}
       onChange={vi.fn()}
-      categories={["Vegetables"]}
+      categoryOptions={[]}
       onReset={vi.fn()}
     />,
   );
@@ -50,7 +50,7 @@ test("calls onChange event handler with correct values everytime we update the f
         inStockOnly: false,
       }}
       onChange={mockOnChange}
-      categories={["Vegetables"]}
+      categoryOptions={[{ category: "Vegetables", isDisabled: false }]}
       onReset={vi.fn()}
     />,
   );
@@ -63,4 +63,25 @@ test("calls onChange event handler with correct values everytime we update the f
 
   await screen.getByRole("checkbox", { name: /show/i }).click();
   expect(mockOnChange).toHaveBeenCalledWith({ inStockOnly: true });
+});
+
+test("onChange event handler should not be called then a category is disabled", async () => {
+  const mockOnChange = vi.fn();
+  const screen = await render(
+    <ProductFilterForm
+      values={{
+        query: "",
+        selectedCategory: "",
+        inStockOnly: false,
+      }}
+      onChange={mockOnChange}
+      categoryOptions={[{ category: "Vegetables", isDisabled: true }]}
+      onReset={vi.fn()}
+    />,
+  );
+
+  await expect(
+    screen.getByRole("combobox", { name: /select/i }).selectOptions("Vegetables"),
+  ).rejects.toThrow();
+  expect(mockOnChange).not.toHaveBeenCalledWith({ selectedCategory: "Vegetables" });
 });

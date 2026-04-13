@@ -69,3 +69,25 @@ test("filters can be cleared", async () => {
   await expect.element(checkboxElement).not.toBeChecked();
   await expect.element(selectElement).toHaveSelection("");
 });
+
+test("shows empty state message when no products match filters", async () => {
+  const screen = await render(<FilterableProductTable products={MOCK_PRODUCTS} />);
+
+  await screen.getByRole("searchbox", { name: /search/i }).fill("non-existing-product");
+
+  await expect
+    .element(screen.getByText(/No products found matching "non-existing-product"/i))
+    .toBeVisible();
+  await expect.element(screen.getByRole("table")).not.toBeInTheDocument();
+});
+
+test("disables categories that have no matches for current search", async () => {
+  const screen = await render(<FilterableProductTable products={MOCK_PRODUCTS} />);
+
+  // Search for "Spin", which only exists in category Vegetables
+  await screen.getByRole("searchbox", { name: /search/i }).fill("Spin");
+
+  // Category "Fruits" should be disabled, "Vegetables" should be enabled
+  await expect.element(screen.getByRole("option", { name: "Fruits" })).toBeDisabled();
+  await expect.element(screen.getByRole("option", { name: "Vegetables" })).not.toBeDisabled();
+});
