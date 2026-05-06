@@ -65,7 +65,7 @@ test("calls onChange event handler with correct values everytime we update the f
   expect(mockOnChange).toHaveBeenCalledWith({ inStockOnly: true });
 });
 
-test("onChange event handler should not be called then a category is disabled", async () => {
+test("onChange event handler should not be called when a category is disabled", async () => {
   const mockOnChange = vi.fn();
   const screen = await render(
     <ProductFilterForm

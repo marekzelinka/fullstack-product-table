@@ -8,17 +8,32 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react(), babel({ presets: [reactCompilerPreset()] })],
   test: {
-    browser: {
-      provider: playwright({
-        launchOptions: {
-          // Use system chrome locally, but default playwright binary in CI
-          // TODO: Once playwright support ubuntu 26 lts we can remove this
-          channel: process.env.CI ? undefined : "chrome",
+    projects: [
+      {
+        test: {
+          include: ["src/**/*.test.ts"],
+          name: "unit",
+          environment: "node",
         },
-      }),
-      enabled: true,
-      headless: true,
-      instances: [{ browser: "chromium" }],
-    },
+      },
+      {
+        test: {
+          include: ["src/**/*.test.tsx"],
+          name: "browser",
+          browser: {
+            provider: playwright({
+              launchOptions: {
+                // Use system chrome locally, but default playwright binary in CI
+                // TODO: Once playwright support ubuntu 26 lts we can remove this
+                channel: process.env.CI ? undefined : "chrome",
+              },
+            }),
+            enabled: true,
+            headless: true,
+            instances: [{ browser: "chromium" }],
+          },
+        },
+      },
+    ],
   },
 });
