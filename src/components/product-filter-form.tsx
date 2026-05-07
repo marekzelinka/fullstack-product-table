@@ -1,4 +1,4 @@
-import type { Filters, Product } from "../lib/types";
+import type { Filters, Product } from "../lib/types.ts";
 
 export function ProductFilterForm({
   values,
