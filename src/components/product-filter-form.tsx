@@ -41,6 +41,7 @@ export function ProductFilterForm({
       </div>
       <div>
         <label>
+          {/* oxlint-disable-next-line jsx-a11y/control-has-associated-label*/}
           <input
             type="checkbox"
             name="inStockOnly"
